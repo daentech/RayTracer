@@ -5,6 +5,7 @@ public class Ray {
 	public Ray(Vector3D hit_point, Vector3D wi) {
 		this.o = hit_point;
 		this.d = wi;
+		this.d.normalise();
 	}
 	public Ray() {
 		// TODO Auto-generated constructor stub

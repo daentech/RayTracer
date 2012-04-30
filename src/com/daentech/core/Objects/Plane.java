@@ -13,6 +13,7 @@ public class Plane extends GeoObject {
 	
 	@Override
 	public boolean hit(Ray r, ray_hit rh, ShadeRec sr){
+		_normal.normalise();
 		double t = (_point.sub(r.o)).dot(_normal) / ((r.d.dot(_normal)));
 		
 		if (t > Constants.kEpsilon){
@@ -26,6 +27,7 @@ public class Plane extends GeoObject {
 	
 	@Override
 	public boolean shadow_hit(Ray r, ray_hit rh){
+		_normal.normalise();
 			double t = (_point.sub(r.o)).dot(_normal) / ((r.d.dot(_normal)));
 		
 		if (t > Constants.kEpsilon){
