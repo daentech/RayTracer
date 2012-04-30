@@ -4,6 +4,7 @@ import com.daentech.core.Lights.Directional;
 import com.daentech.core.Lights.Point;
 import com.daentech.core.Materials.Diffuse;
 import com.daentech.core.Materials.Phong;
+import com.daentech.core.Objects.Circle;
 import com.daentech.core.Objects.Plane;
 import com.daentech.core.Objects.Sphere;
 import com.daentech.core.Objects.Triangle;
@@ -43,7 +44,7 @@ public class raytracer {
 		p.set_cd(new Colour(255, 255, 0));
 		p.set_ka(0.25);
 		p.set_kd(0.65);
-		p.set_ks(0.2);
+		p.set_ks(0.1);
 		p.set_exp(4);
 		s2.material = p;
 		
@@ -65,14 +66,27 @@ public class raytracer {
 		p2.set_cd(new Colour(255, 0, 255));
 		p2.set_ka(0.25);
 		p2.set_kd(0.65);
-		p2.set_ks(0.2);
+		p2.set_ks(0.1);
 		p2.set_exp(4);
 		t1.material = p2;
+		
+		Circle c1 = new Circle();
+		c1._normal = new Vector3D(0, 1, 0.3);
+		c1._point = new Vector3D(0, 20, -30);
+		c1._radius = 40;
+		Phong p3 = new Phong();
+		p3.set_cd(new Colour(0, 255, 0));
+		p3.set_ka(0.25);
+		p3.set_kd(0.65);
+		p3.set_ks(0.1);
+		p3.set_exp(4);
+		c1.material = p3;
 		// add objects
 		s.add_object(s1);
 		s.add_object(s2);
 		s.add_object(p1);
 		s.add_object(t1);
+		s.add_object(c1);
 	}
 	
 	public static void create_lights(Scene s){
