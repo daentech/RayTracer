@@ -1,6 +1,7 @@
 package com.daentech.core.Materials;
 
 import com.daentech.core.Colour;
+import com.daentech.core.Ray;
 import com.daentech.core.ShadeRec;
 import com.daentech.core.Vector3D;
 import com.daentech.core.BRDFs.Lambertian;
@@ -39,10 +40,21 @@ public class Diffuse extends Material {
 			double ndotwi = sr.normal.dot(wi);
 			
 			if (ndotwi > 0.0){
-				Colour c = diffuse_brdf.f(sr, wi, wo);
-				Colour l = sr.w.lights.get(j).L(sr);
-				l = l.mul(ndotwi);
-				L.add(c.mul(l));
+				
+				boolean in_shadow = false;
+
+				if (sr.w.lights.get(j).casts_shadow) {
+					Ray shadow_ray = new Ray(sr.hit_point, wi);
+					in_shadow = sr.w.lights.get(j).in_shadow(shadow_ray, sr);
+				}
+
+				if (!in_shadow) {
+					Colour c = diffuse_brdf.f(sr, wi, wo);
+					Colour l = sr.w.lights.get(j).L(sr);
+					l = l.mul(ndotwi);
+
+					L.add(c.mul(l));
+				}
 			}
 		}
 		L.normalise();
