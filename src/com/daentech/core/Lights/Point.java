@@ -30,7 +30,6 @@ public class Point extends Light {
 		
 		for (int j = 0; j < num_objects; j++){
 			if(sr.w.objects.get(j).shadow_hit(shadow_ray, rh) && rh.t < d){
-				System.out.println("Shadow cast");
 				return true;
 			}
 		}

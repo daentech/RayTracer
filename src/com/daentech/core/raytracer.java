@@ -6,6 +6,7 @@ import com.daentech.core.Materials.Diffuse;
 import com.daentech.core.Materials.Phong;
 import com.daentech.core.Objects.Plane;
 import com.daentech.core.Objects.Sphere;
+import com.daentech.core.Objects.Triangle;
 import com.daentech.core.Tracers.MultipleObjects;
 
 public class raytracer {
@@ -54,10 +55,24 @@ public class raytracer {
 		m.set_ka(0.25);
 		m.set_kd(0.65);
 		p1.material = m;
+		
+		Triangle t1 = new Triangle();
+		t1._a = new Vector3D(-100, 0, 0);
+		t1._b = new Vector3D(100, 0, 0);
+		t1._c = new Vector3D(0, 50, -30);
+		t1.set_normal();
+		Phong p2 = new Phong();
+		p2.set_cd(new Colour(255, 0, 255));
+		p2.set_ka(0.25);
+		p2.set_kd(0.65);
+		p2.set_ks(0.2);
+		p2.set_exp(4);
+		t1.material = p2;
 		// add objects
 		s.add_object(s1);
 		s.add_object(s2);
 		s.add_object(p1);
+		s.add_object(t1);
 	}
 	
 	public static void create_lights(Scene s){
@@ -70,9 +85,9 @@ public class raytracer {
 		
 		Directional d = new Directional();
 		d._colour = new Colour(255);
-		d._direction = new Vector3D(0, 0, 1);
-		d._ls = 1.0;
-		//s.add_light(d);
+		d._direction = new Vector3D(0, 1, 1);
+		d._ls = 0.5;
+		s.add_light(d);
 	}
 	
 	public static void create_camera(Scene s){

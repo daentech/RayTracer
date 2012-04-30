@@ -2,7 +2,9 @@ package com.daentech.core;
 
 public class Vector3D {
 	
-	double _x, _y, _z;
+	public double _x;
+	public double _y;
+	public double _z;
 
 	public Vector3D(){
 		_x = 0;
