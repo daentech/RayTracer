@@ -12,6 +12,8 @@ public class ShadeRec {
 	public double t;
 	public Vector3D hit_point;
 	public Ray ray;
+	public int depth;
+	public Vector3D wi;
 	
 	
 	public ShadeRec(Scene scene) {

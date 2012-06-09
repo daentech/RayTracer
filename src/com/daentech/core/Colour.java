@@ -74,4 +74,9 @@ public class Colour {
 		}
 	}
 
+	public Colour div(double kd) {
+		return new Colour(this._r / kd, this._g / kd,
+				this._b / kd);
+	}
+
 }

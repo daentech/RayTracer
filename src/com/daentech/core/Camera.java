@@ -9,6 +9,8 @@ public class Camera {
 	public Vector3D _up;
 	public double _d;
 	double exposure;
+	public int max_depth;
+	public int s = 1;
 	
 	Vector3D u, v, w;
 	

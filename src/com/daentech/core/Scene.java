@@ -14,7 +14,6 @@ import com.daentech.core.Tracers.Tracer;
 
 public class Scene {
 	
-	public ViewPlane vp = new ViewPlane();
 	public Colour background_colour;
 	public Colour[] image;
 	public Tracer	tracer_ptr;
@@ -30,13 +29,11 @@ public class Scene {
 	}
 	
 	public void build(){
-		vp.s = 1;
-		
 		background_colour = new Colour();
 		
 	}
 	
-	public void render_camera(){
+	public void render_camera(int i){
 		Colour L;
 		Ray ray = new Ray();
 		
@@ -50,20 +47,20 @@ public class Scene {
 		
 		for (int r = 0; r < camera.vres; r++){
 			for (int c = 0; c < camera.hres; c++){
-				pp._x = vp.s * (c - 0.5 * (camera.hres - 1));
-				pp._y = vp.s * (r - 0.5 * (camera.vres - 1));
+				pp._x = camera.s * (c - 0.5 * (camera.hres - 1));
+				pp._y = camera.s * (r - 0.5 * (camera.vres - 1));
 				ray.d = camera.ray_direction(pp);
 				L = tracer_ptr.trace_ray(ray, depth);
 				display_pixel(r, c, L);
 			}
 		}
 		
-		write_image();
+		write_image(i);
 	}
 	
-	public void write_image(){
+	public void write_image(int num){
 		try {
-			FileOutputStream fout = new FileOutputStream(new File("image.ppm"));
+			FileOutputStream fout = new FileOutputStream(new File("images/" + String.format("%05d", num) + ".ppm"));
 			OutputStreamWriter osw = new OutputStreamWriter(fout);
 			osw.write("P3\n");
 			osw.write(camera.hres + " " + camera.vres + "\n");
@@ -73,7 +70,7 @@ public class Scene {
 			for (int i = camera.vres - 1; i >= 0; i--){
 				for (int j = camera.hres - 1; j >= 0; j--){
 					Colour c = image[i * camera.hres + j];
-					osw.write((int)c._r + " " + (int)c._g + " " + (int)c._b);
+					osw.write(Math.min((int)c._r, 255) + " " + Math.min((int)c._g, 255) + " " + Math.min((int)c._b, 255));
 					if (j == 0)
 						osw.write("\n");
 					else

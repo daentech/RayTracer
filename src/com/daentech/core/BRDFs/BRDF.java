@@ -14,4 +14,8 @@ public class BRDF {
 		return new Colour();
 	}
 
+	public Colour sample_f(ShadeRec sr, Vector3D wo, Vector3D wi) {
+		return new Colour();
+	}
+
 }
