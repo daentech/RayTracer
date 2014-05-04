@@ -14,9 +14,11 @@ public class ShadeRec {
 	public Ray ray;
 	public int depth;
 	public Vector3D wi;
-	
-	
-	public ShadeRec(Scene scene) {
+    public double u;
+    public double v;
+
+
+    public ShadeRec(Scene scene) {
 		w = scene;
 	}
 

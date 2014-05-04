@@ -1,8 +1,9 @@
 package com.daentech.core;
 
 public class Vector3D {
-	
-	public double _x;
+
+    public static final Vector3D zero = new Vector3D();
+    public double _x;
 	public double _y;
 	public double _z;
 

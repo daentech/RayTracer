@@ -2,25 +2,28 @@ package com.daentech.core;
 
 import com.daentech.core.Lights.Directional;
 import com.daentech.core.Lights.Point;
+import com.daentech.core.Mappings.SphericalMapping;
 import com.daentech.core.Materials.Diffuse;
 import com.daentech.core.Materials.PerfectReflective;
 import com.daentech.core.Materials.Phong;
+import com.daentech.core.Materials.SV_Diffuse;
 import com.daentech.core.Objects.Circle;
 import com.daentech.core.Objects.Plane;
 import com.daentech.core.Objects.Sphere;
 import com.daentech.core.Objects.Triangle;
+import com.daentech.core.Texture.ImageTexture;
 import com.daentech.core.Tracers.MultipleObjects;
+import com.daentech.core.Utils.Image;
 
 public class raytracer {
 
 	public static void main(String[] args) {
-		System.out.println("Here");
 
 		Scene s = new Scene();
 		create_objects(s);
 
 		create_lights(s);
-		int frames = 200;
+		int frames = 1;
 		for (int i = 0; i < frames; i++) {
 			create_camera(s, i);
 			s.build();
@@ -51,14 +54,32 @@ public class raytracer {
 		r2.set_kr(0.55);
 		r2.set_cr(new Colour(255));
 
+        SV_Diffuse d1 = new SV_Diffuse();
+        ImageTexture tex1 = new ImageTexture();
+        tex1.mapping = new SphericalMapping();
+        tex1.setImage(Image.fromPPM6("textures/EarthHighRes.ppm"));
+
+        d1.set_ka(0.25);
+        d1.set_kd(0.75);
+        d1.set_cd(tex1);
+
+        SV_Diffuse d2 = new SV_Diffuse();
+        ImageTexture tex2 = new ImageTexture();
+        tex2.mapping = new SphericalMapping();
+        tex2.setImage(Image.fromPPM6("textures/BilliardBall.ppm"));
+
+        d2.set_ka(0.25);
+        d2.set_kd(0.75);
+        d2.set_cd(tex2);
+
 		Sphere s2 = new Sphere();
 		s2._origin = new Vector3D(0, 20, 30);
 		s2._radius = 30;
-		s2.material = r2;
+		s2.material = d1;
 		Sphere s4 = new Sphere();
 		s4._origin = new Vector3D(0, 20, 90);
 		s4._radius = 30;
-		s4.material = r2;
+		s4.material = d2;
 		Sphere s5 = new Sphere();
 		s5._origin = new Vector3D(-60, 20, 90);
 		s5._radius = 30;
@@ -70,7 +91,7 @@ public class raytracer {
 		Sphere s7 = new Sphere();
 		s7._origin = new Vector3D(0, 20, 150);
 		s7._radius = 30;
-		s7.material = r2;
+		s7.material = d1;
 		Sphere s8 = new Sphere();
 		s8._origin = new Vector3D(-60, 20, -30);
 		s8._radius = 30;
@@ -185,8 +206,8 @@ public class raytracer {
 		s.camera._origin = new Vector3D(i - 100, 200, 300);
 		s.camera._lookat = new Vector3D(0, 0, 90);
 		s.camera._up = new Vector3D(0, 1, 0);
-		s.camera.hres = 1920;
-		s.camera.vres = 1080;
+		s.camera.hres = 640;
+		s.camera.vres = 480;
 		s.camera._d = 850;
 		s.camera.max_depth = 10;
 		s.camera.s = 1;

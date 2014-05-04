@@ -11,11 +11,12 @@ import com.daentech.core.Lights.Ambient;
 import com.daentech.core.Lights.Light;
 import com.daentech.core.Objects.GeoObject;
 import com.daentech.core.Tracers.Tracer;
+import com.daentech.core.Utils.Image;
 
 public class Scene {
 	
 	public Colour background_colour;
-	public Colour[] image;
+	public Image image;
 	public Tracer	tracer_ptr;
 	public Camera	camera;
 	public Light	ambient_light;
@@ -44,6 +45,9 @@ public class Scene {
 		create_image();
 		
 		ray.o = camera._origin;
+
+        percentSB = new StringBuilder();
+
 		
 		for (int r = 0; r < camera.vres; r++){
 			for (int c = 0; c < camera.hres; c++){
@@ -52,13 +56,29 @@ public class Scene {
 				ray.d = camera.ray_direction(pp);
 				L = tracer_ptr.trace_ray(ray, depth);
 				display_pixel(r, c, L);
+                updateProgress(r, c);
 			}
 		}
 		
 		write_image(i);
 	}
-	
-	public void write_image(int num){
+
+    private int previousPercent = - 1;
+    private StringBuilder percentSB = new StringBuilder();
+
+    private void updateProgress(int r, int c) {
+        float percent = (float)(r*camera.hres + c) / (float)(camera.vres * camera.hres) * 100;
+        // Only update if we have changed %
+        if (previousPercent == (int)percent) return;
+        previousPercent = (int)percent;
+        // Assume 25 wide
+        if ((int)percent % 4 == 0)
+            percentSB.append("=");
+
+        System.out.print("|" + percentSB.toString() + "> " + percent + "%\r");
+    }
+
+    public void write_image(int num){
 		try {
 			FileOutputStream fout = new FileOutputStream(new File("images/" + String.format("%05d", num) + ".ppm"));
 			OutputStreamWriter osw = new OutputStreamWriter(fout);
@@ -69,7 +89,7 @@ public class Scene {
 			// Write image data in reverse;
 			for (int i = camera.vres - 1; i >= 0; i--){
 				for (int j = camera.hres - 1; j >= 0; j--){
-					Colour c = image[i * camera.hres + j];
+					Colour c = image.pixels[i * camera.hres + j];
 					osw.write(Math.min((int)c._r, 255) + " " + Math.min((int)c._g, 255) + " " + Math.min((int)c._b, 255));
 					if (j == 0)
 						osw.write("\n");
@@ -92,11 +112,11 @@ public class Scene {
 	}
 	
 	public void create_image(){
-		image = new Colour[camera.hres * camera.vres];
+		image = new Image(camera.hres, camera.vres);
 	}
 	
 	public void display_pixel(int row, int col, Colour pixel){
-		image[row * camera.hres + col] = pixel;
+		image.setPixel(row * camera.hres + col, pixel);
 	}
 	
 	public void add_object(GeoObject o){

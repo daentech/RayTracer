@@ -1,2 +1,5 @@
 */.goutput*
 images/*
+.idea
+*.iml
+out

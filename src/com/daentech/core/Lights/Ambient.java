@@ -9,7 +9,7 @@ public class Ambient extends Light{
 	public Colour colour;
 	
 	public Ambient(){
-		_ls = 1.0;
+		_ls = 0.5;
 		colour = new Colour(255, 255, 255);
 	}
 	

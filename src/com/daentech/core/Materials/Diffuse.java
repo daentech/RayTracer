@@ -60,5 +60,4 @@ public class Diffuse extends Material {
 		L.normalise();
 		return L;
 	}
-
 }

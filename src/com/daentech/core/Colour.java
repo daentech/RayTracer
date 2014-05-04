@@ -4,6 +4,9 @@ public class Colour {
 
 	double _r, _g, _b;
 
+    // Static colours
+    public static Colour BLACK = new Colour(0, 0, 0);
+
 	public Colour() {
 		_r = 0;
 		_g = 0;
@@ -79,4 +82,8 @@ public class Colour {
 				this._b / kd);
 	}
 
+    @Override
+    public String toString() {
+        return String.format("(%f, %f, %f)", _r, _g, _b);
+    }
 }
