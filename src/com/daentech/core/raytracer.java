@@ -3,10 +3,7 @@ package com.daentech.core;
 import com.daentech.core.Lights.Directional;
 import com.daentech.core.Lights.Point;
 import com.daentech.core.Mappings.SphericalMapping;
-import com.daentech.core.Materials.Diffuse;
-import com.daentech.core.Materials.PerfectReflective;
-import com.daentech.core.Materials.Phong;
-import com.daentech.core.Materials.SV_Diffuse;
+import com.daentech.core.Materials.*;
 import com.daentech.core.Objects.Circle;
 import com.daentech.core.Objects.Plane;
 import com.daentech.core.Objects.Sphere;
@@ -63,14 +60,18 @@ public class raytracer {
         d1.set_kd(0.75);
         d1.set_cd(tex1);
 
-        SV_Diffuse d2 = new SV_Diffuse();
+        SV_PerfectReflective d2 = new SV_PerfectReflective();
         ImageTexture tex2 = new ImageTexture();
         tex2.mapping = new SphericalMapping();
-        tex2.setImage(Image.fromPPM6("textures/BilliardBall.ppm"));
+        tex2.setImage(Image.fromPPM6("textures/EarthHighRes.ppm"));
 
         d2.set_ka(0.25);
         d2.set_kd(0.75);
         d2.set_cd(tex2);
+        d2.set_ks(0.15);
+        d2.set_exp(100);
+        d2.set_kr(0.55);
+        d2.set_cr(new Colour(255));
 
 		Sphere s2 = new Sphere();
 		s2._origin = new Vector3D(0, 20, 30);
@@ -79,7 +80,7 @@ public class raytracer {
 		Sphere s4 = new Sphere();
 		s4._origin = new Vector3D(0, 20, 90);
 		s4._radius = 30;
-		s4.material = d2;
+		s4.material = r2;
 		Sphere s5 = new Sphere();
 		s5._origin = new Vector3D(-60, 20, 90);
 		s5._radius = 30;
@@ -91,7 +92,7 @@ public class raytracer {
 		Sphere s7 = new Sphere();
 		s7._origin = new Vector3D(0, 20, 150);
 		s7._radius = 30;
-		s7.material = d1;
+		s7.material = d2;
 		Sphere s8 = new Sphere();
 		s8._origin = new Vector3D(-60, 20, -30);
 		s8._radius = 30;
